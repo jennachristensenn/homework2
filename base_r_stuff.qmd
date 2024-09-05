@@ -1,0 +1,125 @@
+---
+title: "Base_R_Code"
+format: html
+editor: visual
+---
+
+## Task 1: Basic Vector Practice
+
+1.  Creating the vectors for the pre and post treatment values
+
+```{r}
+pre_treat <- c(120, 151, 125, 126, 115, 132, 132, 129, 134, 139, 127, 122, 127, 135, 133, 128, 147, 138, 140, 132)
+
+post_treat <- c(127, 145, 135, 122, 115, 122, 123, 126, 126, 129, 132, 146, 120, 114, 121, 120, 128, 120, 133, 115)
+```
+
+2.  Assigning names to the vectror elements
+
+```{r}
+pre_subjects <- paste("Subject", 1:20, sep = "_")
+names(pre_treat) <- pre_subjects
+pre_treat
+
+post_subjects <- paste("Subject", 1:20, sep = "_")
+names(post_treat) <- post_subjects
+post_treat
+
+```
+
+3.  Calculating the change in blood pressure
+
+```{r}
+bp_change <- pre_treat - post_treat
+bp_change
+```
+
+4.  Finding the average blood pressure change
+
+```{r}
+mean(bp_change)
+```
+
+5.  Finding patients that experienced a decrease in blood pressure
+
+```{r}
+dec_bp <- which(bp_change > 0)
+dec_bp_sub <- names(bp_change)[dec_bp]
+dec_bp_sub
+```
+
+6.  Subset returning subjects with a positive change
+
+```{r}
+bool_dec_bp <- bp_change > 0 
+bool_dec_bp
+```
+
+7.  Calculating average decrease in blood pressure
+
+```{r}
+avg_dec_bp <- mean(dec_bp)
+avg_dec_bp
+```
+
+## Task 2: Basic Data Frame Practice
+
+1. Creating a data frame
+```{r}
+patients <- paste("subject", 1:20, sep = "_")
+bp_df <- data.frame(patients, pre_treat, post_treat, bp_change)
+bp_df
+dim(bp_df)
+```
+
+2. Rows where difference is negative
+```{r}
+subset <- bp_df[bp_df$bp_change < 0, ]
+subset
+```
+
+3. Adding a new column
+```{r}
+bp_df$bp120 <- c(post_treat < "120")
+```
+
+4. Printing out data frame
+```{r}
+knitr::kable(bp_df)
+```
+
+## Task 3: List Practice
+
+Entering the placebo treatment numbers
+```{r}
+plac_pre_treat <- c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130)
+plac_post_treat <-c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124)
+```
+
+1. Creating new placebo patient data frame
+```{r}
+plac_patients <- paste("subject", 1:10, sep = "_")
+plac_bp_change <- plac_pre_treat - plac_post_treat
+plac_bp120 <- plac_post_treat < "120"
+plac_bp_df <- data.frame(plac_patients, plac_pre_treat, plac_post_treat, plac_bp_change, plac_bp120)
+plac_bp_df
+```
+
+2. Creating the list with two elements
+```{r}
+bp_list <- list(treatment = bp_df, placebo = plac_bp_df)
+bp_list
+```
+
+3. Accessing the first list element
+```{r}
+bp_list[1]
+str(bp_list[1])
+bp_list$treatment
+
+```
+
+4. Accessing the pre_treat column of placebo data
+```{r}
+bp_list$placebo$plac_pre_treat
+```
